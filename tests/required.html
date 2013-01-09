@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>表单验证类</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="Content-Language" content="zh-CN"/>
+    <link rel="stylesheet" type="text/css" href="assets/reset.css" />
+    <link rel="stylesheet" type="text/css" href="assets/main.css" />
+    <style type="text/css">
+    input{border:1px solid #CCC;outline: none;padding: 2px}
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>required</h1>
+        <form action="javascript:void(0);" name="cust">
+            <label>客户账号:<input type="text" name="custName" /></label>
+            <input type="submit" id="submit" />
+            <textarea id="validate-config" style="display:none">
+            {
+                "custName":{
+                    "required": {
+                        "trim":true,
+                        "message": "客户账号为必填。"
+                    }
+                }
+            }
+            </textarea>
+        </form>
+    </div>
+    <script type="text/javascript" src="assets/tangram.js"></script>
+    <script type="text/javascript" src="../lib.js"></script>
+    <script type="text/javascript">
+    var cfg = JSON.parse(baidu.g("validate-config").value)
+    var va = new Form.Validate("submit", cfg, {
+        interrupt:true,
+        debug:true
+    });
+    baidu.on("submit", "click", function() {
+        var result = va.check();
+        if(true == result) {
+            console.log("ok..")
+        } else {
+            console.warn(result);
+        }
+    });
+
+    </script>
+</body></html>

@@ -143,6 +143,10 @@
 		"selected_items":
 		[
 			[
+				"f",
+				"Format: Javascript"
+			],
+			[
 				"in",
 				"Package Control: Install Package"
 			],
@@ -175,10 +179,6 @@
 				"Package Control: Install Package"
 			],
 			[
-				"f",
-				"Format: Javascript"
-			],
-			[
 				"svn cl",
 				"SVN: Cleanup"
 			]
@@ -200,11 +200,19 @@
 	},
 	"file_history":
 	[
+		"/home/work/validation/tests/index.html",
+		"/home/work/validation/tests/assets/main.css",
+		"/home/work/validation/tests/required.html",
+		"/home/work/validation/lib.js",
+		"/home/work/validation/tests/assets/helper.js",
+		"/tmp/sublime-svn-1356183773/SVN",
+		"/home/work/code-snippets/validation/static/style/main.css",
+		"/home/work/code-snippets/validation/validate.php",
+		"/tmp/sublime-svn-1356174189/SVN",
 		"/home/work/code-snippets/validation/validate.php.mine",
 		"/home/work/code-snippets/validation/static/lib/validate.js.mine",
 		"/home/work/code-snippets/validation/static/lib/validate.js.r39",
 		"/home/work/code-snippets/validation/static/lib/validate.js.r38",
-		"/home/work/code-snippets/validation/validate.php",
 		"/home/work/code-snippets/validation/static/lib/validate.js",
 		"/tmp/sublime-svn-1356105381/SVN",
 		"/tmp/sublime-svn-1356104351/SVN",
@@ -331,6 +339,6 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 208.0,
+	"side_bar_width": 218.0,
 	"status_bar_visible": true
 }

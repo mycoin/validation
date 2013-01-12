@@ -1,8 +1,12 @@
 /**
- * @fileOverview This file contains various library functions Validatious uses
- * when in standalone mode. When bridging Validatious to frameworks you need
- * to replicate the functionality in this file leveraging the frameworks custom
- * functionality. This will help you minimize duplication.
+ *                                                        ____   _____
+ *  Struts2 Validation -- lib.js, version 1.1             \  /_  /   /
+ *  Built at 2012/12/16 08:44 GMT                          \  / /   /
+ *                                                          \/ /_  /
+ *  (c) baidu.com 2012                                       \  / /
+ *  All rights reserved.                                       / /
+ *  Visit https://github.com/mycoin/validation for details     \/
+ *
  */
 var Form = {};
 var debug = function(error, type) {
@@ -12,7 +16,7 @@ var debug = function(error, type) {
  * If you would like an application-wide config, change this default name.
  * Otherwise, use the Validate to handle form specific messages.
  */
-!(function(window, document, undefined) {
+;(function(window, document, undefined) {
     var ENV_DEVELOPMENT = true;
 
     var exports = null,

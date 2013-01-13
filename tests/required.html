@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="assets/main.css" />
     <style type="text/css">
     input{border:1px solid #CCC;outline: none;padding: 2px}
+    .message{display: block; height: 20px;}
     </style>
 </head>
 <body>
@@ -26,6 +27,7 @@
                 }
             }
             </textarea>
+            <span class="message" id="message"></span>
         </form>
 
     </div>
@@ -35,16 +37,21 @@
     <script type="text/javascript">
     var cfg = JSON.parse(baidu.g("validate-config").value)
     var va = new Form.Validate("submit", cfg, {
-        interrupt:true,
-        debug:true
+        interrupt: true,
+        without_trim: true,
+        without_xss : true
     });
+
+    va.setParameter("onBeforeValidate", function (dataMap) {
+        console.log(dataMap)
+    })
+
     baidu.on("submit", "click", function() {
-        var result = va.check();
-        if(true == result) {
-            console.log("ok..")
-        } else {
-            console.warn(result);
+        baidu.g("message").innerHTML = "";
+        if(!va.check()) {
+            baidu.g("message").innerHTML = va.getMessage();;
         }
+
     });
 
     </script>

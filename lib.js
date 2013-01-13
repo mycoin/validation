@@ -24,7 +24,6 @@ var debug = function(error, type) {
             main: {}
         },
         __utils = {};
-        
     /*
      * Define the regular expressions that will be used
      */

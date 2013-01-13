@@ -24,30 +24,26 @@ var debug = function(error, type) {
             main: {}
         },
         __utils = {};
-
-    function isset(field) {
-        return !(undefined === field);
-    };
-
-    function trim(string) {
-        string = string == null ? "" : string;
-        return String(string).replace(new RegExp("(^[\\s\\t\\xa0\\u3000]+)|([\\u3000\\xa0\\s\\t]+$)", "g"), "");
-    };
-
-    
-
-    function empty(value) {
-        if(value == null || value == undefined) {
-            value = "";
-        }
-        return value.length == 0;
-    };
+        
     /*
      * Define the regular expressions that will be used
      */
     __closure.main = function() {
+        function isset(field) {
+            return !(undefined === field);
+        };
 
+        function trim(string) {
+            string = string == null ? "" : string;
+            return String(string).replace(new RegExp("(^[\\s\\t\\xa0\\u3000]+)|([\\u3000\\xa0\\s\\t]+$)", "g"), "");
+        };
 
+        function empty(value) {
+            if(value == null || value == undefined) {
+                value = "";
+            }
+            return value.length == 0;
+        };
         function stringify(value) {
             return value == null || value == undefined ? "" : value;
         };

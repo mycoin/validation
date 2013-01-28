@@ -9,7 +9,8 @@
  * https://github.com/mycoin/validation
  */
 var rigel = rigel || {};;
-(function(window, document, undefined) {
+;(function(window, document, undefined) {
+    // use the trict mode 
     "use strict";
     var exports = {};
     var closure = {validators: {}};
@@ -27,7 +28,8 @@ var rigel = rigel || {};;
         return ret;
     }
     /**
-     * the main validations rules, contains [required, requiredstring, int, double, date, email, regex, url, stringLength..]
+     * the main validations rules, contains [required, 
+        requiredstring, int, double, date, email, regex, url, stringLength..]
      * @return true || message string.
      */
     closure.validators = function () {
@@ -140,7 +142,6 @@ var rigel = rigel || {};;
                 }
                 return true;
             },
-
             /**
              * checks if the date supplied is within a specific range.
              * rule {min, max}
@@ -275,8 +276,8 @@ var rigel = rigel || {};;
                 var func = closure.validators[type];
                 if(typeof func == "function") {
                     var message = func(rule, dataMap[key], dataMap);
-                    if(true !== message){
-                        return message;
+                    if(true !== message){ 
+                        return message; 
                     }
                 } else {
                     console.warn("Validation function " + type + " not found.");
@@ -297,10 +298,56 @@ var rigel = rigel || {};;
         }
         return new closure.result(stacks);
     };
-    
+    /**
+     * the register entry, you can register a function onto the validators
+     * @param string name
+     * @param Function function the callback function, pass {rule, value, data}
+     */
+    exports.reg = function(){
+
+    }
+    // add version field.
+    exports.version = "stable-1.0";
+    // export it
     rigel.validation = exports;
 })(window, document);
 
 /**
+using:
+you can define the form validate config like this:
+var rules = {
+    "regAccount": {
+        "required": {
+            message: "please input account."
+        },
+        "stringLength": {
+            maxLength: 18, 
+            minLength: 3, 
+            message: "account length error"
+        }
+    },
+    "regCellphone": {
+        "required": {
+            message: "please input your Cellphone."
+        },
+        "regex": {
+            "caseSensitive": false,
+            "trim": true,
+            "expression": "^1[3|5|8]{1}{0-9}{9}$",
+            "message": "error in Cellphone."
+        }
+    }
+}
+now, use your library get form data:
+var data = $("#reg_form").serialize(); 
+
+then fire the main function:
+var checking = rigel.validation.check(data, rules);
+if(!checking.result) {
+    alert(checking.message);
+} else {
+    balalala....
+}
+
 java -jar /home/work/code-snippets/runable/WebContent/tools/yuicompressor.jar --type js --charset UTF-8 lib.js -o lib.min.js
 */

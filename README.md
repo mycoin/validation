@@ -29,7 +29,9 @@ var rules = {
     }
 }
 </pre>
-now, use your library get form data:
+familiar with't ? the same structure as validation.xml.
+
+now, use your library to get form data:
 var data = $("#reg_form").serialize(); 
 
 then fire the main function:

@@ -4,6 +4,7 @@ x-validator.js
 an other form validation based on the struts2 framework ..
 
 you can define the form validate config like this:
+<pre>
 var rules = {
     "regAccount": {
         "required": {
@@ -27,12 +28,16 @@ var rules = {
         }
     }
 }
+</pre>
 now, use your library get form data:
 var data = $("#reg_form").serialize(); 
 
 then fire the main function:
+<pre>
 var checking = rigel.validation.check(data, rules);
 if(false == checking.result) {
     alert(checking.message);
     return false;
 }
+...
+</pre>

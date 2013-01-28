@@ -43,3 +43,25 @@ if(false == checking.result) {
 }
 ...
 </pre>
+
+the result will be like this:
+<pre>
+result = {
+    result: true,
+    stacks:[]
+};
+
+result = {
+    result: false,
+    stacks:[{
+            field: "loginUserName",
+            message: "error UserName.."
+        }, {
+            field: "loginPassword",
+            message: "error password.."
+        }
+    ],
+    field: "loginUserName",
+    message: "error UserName.."
+}
+</pre>

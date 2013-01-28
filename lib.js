@@ -10,34 +10,46 @@
  */
 var rigel = rigel || {};;
 (function(window, document, undefined) {
-    "";
-    var exports = {
-        "version": "1.1.7"
-    };
-    var closure = {
-        validators: {}
-    };
+    "use strict";
+    var exports = {};
+    var closure = {validators: {}};
+    /**
+     * entry of result, passed if stacks arraylength is 0, or wrong fields data
+     * @param <Array> stacks
+     */
     closure.result = function (stacks) {
-        var result = {};
-        if(stacks.length == 0) {
-            result.result = true;
-            result.stacks = [];
-        } else {
-            result.result = false;
-            result.stacks = stacks;
-            result.field = stacks[0].field;
-            result.message = stacks[0].message || "ErrorMessage";
-        }
-        return result;
+        var ret = {
+            result: !stacks.length,
+            stacks: stacks
+        };
+        !ret.result && (ret.field = stacks[0].field);
+        !ret.result && (ret.message = stacks[0].message);
+        return ret;
     }
+    /**
+     * the main validations rules, contains [required, requiredstring, int, double, date, email, regex, url, stringLength..]
+     * @return true || message string.
+     */
     closure.validators = function () {
+        /**
+         * notice String(undefined) == "", so assert null into ""
+         * @param Object {null, uindefined, String}, yes, toString method instead 
+         * @return return a string that has been trimed.
+         */
         function trim(string) {
-            string = string == null ? "" : string;
+            string == null && (string = undefined);
             return String(string).replace(new RegExp("(^[\\s\\t\\xa0\\u3000]+)|([\\u3000\\xa0\\s\\t]+$)", "g"), "");
         };
-
+        /**
+         * modify null, empty string, and undefined to a param item.
+         * @example modify(message, "");
+         *
+         * @param Object value
+         * @param Object type
+         * @return Object value (optional)
+         */
         function modify (value, type) {
-            if(value == "" || value == undefined || value == null) {
+            if(value === "" || value === undefined || value === null) {
                 value = type;
             }
             return value;
@@ -48,8 +60,8 @@ var rigel = rigel || {};;
              * @see RequiredFieldValidator.java
              */
             "required": function (rule, value) {
-                value = modify(value);
-                return value == null ? rule.message : true
+                value = modify(value, null);
+                return value == null ? rule["message"] : true
             },
             /**
              * checks that a String field is non-null and has a length > 0
@@ -58,8 +70,8 @@ var rigel = rigel || {};;
              */
             "requiredstring": function (rule, value) {
                 value = modify(value, "");
-                rule.trim == true && (value = trim(value));
-                return value.length == 0 ? rule.message : true;
+                rule["trim"] == true && (value = trim(value));
+                return value.length == 0 ? rule["message"] : true;
             },
             /**
              * checks if the integer specified is within a certain range.
@@ -75,19 +87,19 @@ var rigel = rigel || {};;
                 }
                 if(! /^\-?[0-9]+$/.test(value)) {
                     //not a number
-                    return rule.message;
+                    return rule["message"];
                 } else {
                     value = parseInt(value);
                 }
-                var min = parseInt(rule.min);
-                var max = parseInt(rule.max);
+                var min = parseInt(rule["min"]);
+                var max = parseInt(rule["max"]);
                 //only check for a minimum value if the min parameter is set
                 if(! isNaN(min) && value - min < 0) {
-                    return rule.message;
+                    return rule["message"];
                 }
                 //only check for a minimum value if the max parameter is set
                 if(! isNaN(max) && value - max > 0) {
-                    return rule.message;
+                    return rule["message"];
                 }
                 return true;
             },
@@ -105,26 +117,26 @@ var rigel = rigel || {};;
                 }
                 if(! /^\-?[0-9]*\.?[0-9]+$/.test(value)) {
                     //not a double, nani? double??
-                    return rule.message;
+                    return rule["message"];
                 } else {
                     value = parseFloat(value);
                 }
                 //the maximum inclusive value
-                var maxInclusiveValue = parseFloat(rule.maxInclusiveValue);
+                var maxI = parseFloat(rule["maxInclusiveValue"]);
                 //the minimum inclusive value
-                var minInclusiveValue = parseFloat(rule.minInclusiveValue);
+                var minI = parseFloat(rule["minInclusiveValue"]);
                 //the maximum exclusive value
-                var maxExclusiveValue = parseFloat(rule.maxExclusiveValue);
+                var maxE = parseFloat(rule["maxExclusiveValue"]);
                 //the minimum exclusive value
-                var minExclusiveValue = parseFloat(rule.minExclusiveValue);
+                var minE = parseFloat(rule["minExclusiveValue"]);
                 
                 // nani ? so ga..
-                if ((!isNaN(maxInclusiveValue) && value - maxInclusiveValue > 0)
-                    || (!isNaN(minInclusiveValue) && value - minInclusiveValue < 0)
-                    || (!isNaN(maxExclusiveValue) && value - maxExclusiveValue >= 0)
-                    || (!isNaN(minExclusiveValue) && value - minExclusiveValue <= 0)
+                if ((!isNaN(maxI) && value - maxI > 0)
+                    || (!isNaN(minI) && value - minI < 0)
+                    || (!isNaN(maxE) && value - maxE >= 0)
+                    || (!isNaN(minE) && value - minE <= 0)
                     ){
-                    return rule.message;
+                    return rule["message"];
                 }
                 return true;
             },
@@ -142,31 +154,35 @@ var rigel = rigel || {};;
                     return true;
                 }
                 var parseDate = function (date) {
-                    if(date = Date.parse(date)) {
+                    var temp = date;
+                    if(temp = Date.parse(date)) {
                         //if type of date is Date, also exit here
-                        return new Date(date);
+                        return new Date(temp);
                     }
-                    if(/^[0-9\-\/\ :]*$/.test(date)) {
-                        date = date.replace("-", "/");
-                        if(date = new Date(date)) {
-                            return date;
+                    temp = date;
+                    if(/^[0-9\-\/\ :]*$/.test(temp)) {
+                        temp = temp.replace(/\-/g, "/");
+                        if(temp = new Date(temp)) {
+                            return temp;
                         }
                     }
                     return NaN;
                 }
                 var value = parseDate(value);
+
                 if(!value || "Invalid Date" == value) {
-                    return rule.message;
+                    return rule["message"];
                 }
-                var min = parseDate(rule.min);
-                var max = parseDate(rule.max);
+                var min = parseDate(rule["min"]);
+                var max = parseDate(rule["max"]);
+
                 //only check for a minimum value if the min date is set
                 if(! isNaN(min) && value.getTime() - min.getTime() < 0) {
-                    return rule.message;
+                    return rule["message"];
                 }
                 //only check for a minimum value if the max date is set
                 if(! isNaN(max) && value.getTime() - max.getTime() > 0) {
-                    return rule.message;
+                    return rule["message"];
                 }
                 return true;
             },
@@ -177,8 +193,8 @@ var rigel = rigel || {};;
              */
             "email": function (rule, value) {
                 //struts2 is so stupid.
-                rule.expression = "^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+(\.[A-Za-z0-9-]+)*((\.[A-Za-z0-9]{2,})|(\.[A-Za-z0-9]{2,}\.[A-Za-z0-9]{2,}))$";;
-                rule.caseSensitive = false;
+                rule["expression"] = "^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+(\.[A-Za-z0-9-]+)*((\.[A-Za-z0-9]{2,})|(\.[A-Za-z0-9]{2,}\.[A-Za-z0-9]{2,}))$";
+                rule["caseSensitive"] = false;
                 return closure.validators.regex(rule, value);
             },
             /**
@@ -193,14 +209,14 @@ var rigel = rigel || {};;
                     return true;
                 }
                 //from xwork2. e? Java is so stupid
-                undefined == rule.caseSensitive && (rule.caseSensitive = true);
-                undefined == rule.trim && (rule.trim = true);
+                undefined == rule["caseSensitive"] && (rule["caseSensitive"] = true);
+                undefined == rule["trim"] && (rule["trim"] = true);
                 
-                rule.trim == true && (value = trim(value));
-                var opt = rule.caseSensitive ? "i" :  undefined;
+                rule["trim"] == true && (value = trim(value));
+                var opt = rule["caseSensitive"] ? "i" :  undefined;
                 try{
-                    if(!new RegExp(rule.expression, opt).test(value)){
-                        return rule.message;
+                    if(!new RegExp(rule["expression"], opt).test(value)){
+                        return rule["message"];
                     } 
                 } catch(ex){};
                 
@@ -230,22 +246,27 @@ var rigel = rigel || {};;
                 if(value == null || value.length <= 0) {
                     return true;
                 }
-                undefined == rule.minLength && (rule.minLength = -1);
-                undefined == rule.maxLength && (rule.maxLength = -1);
-                undefined == rule.trim && (rule.trim = true);
+                undefined == rule["minLength"] && (rule["minLength"] = -1);
+                undefined == rule["maxLength"] && (rule["maxLength"] = -1);
+                undefined == rule["trim"] && (rule["trim"] = true);
                 // use a required validator for these
                 rule.trim == true && (value = trim(value));
 
-                if ((rule.minLength > -1) && (value.length < rule.minLength)) {
-                    return rule.message;
-                } else if ((rule.minLength > -1) && (value.length > rule.minLength)) {
-                    return rule.message;
+                if ((rule["minLength"] > -1) && (value.length < rule["minLength"])) {
+                    return rule["message"];
+                } else if ((rule["minLength"] > -1) && (value.length > rule["minLength"])) {
+                    return rule["message"];
                 }
                 return true;
             }
 
         };
     }();
+    /**
+     * the portal entry, check if the data matches the rules. exports the error statcks.
+     * @param Object dataMap the data, pls use baidu.form.seriser
+     * @see StringLengthFieldValidator.java
+     */
     exports.check = function(dataMap, rulesMap) {
         var stacks = [];
         var validate = function() {
@@ -263,15 +284,16 @@ var rigel = rigel || {};;
             }
             return true;
         }
+        //clever closure..
         var exception = function (key, message) {
+            if(typeof message == "undefined") {
+                console.warn("need message field input " + key + " not found.");
+            }
             return {field: key, message: message, value: dataMap[key]}
         };
         for(var key in rulesMap || {}) {
             var message = validate(key);
-            if(message !== true) {
-                //push error message
-                stacks.push(new exception(key, message)); 
-            }
+            message !== true && stacks.push(new exception(key, message)); 
         }
         return new closure.result(stacks);
     };
@@ -280,5 +302,5 @@ var rigel = rigel || {};;
 })(window, document);
 
 /**
-java -jar /home/work/code-snippets/runable/WebContent/tools/yuicompressor.jar --type js --charset UTF-8 lib.js -o validation.min.js
+java -jar /home/work/code-snippets/runable/WebContent/tools/yuicompressor.jar --type js --charset UTF-8 lib.js -o lib.min.js
 */

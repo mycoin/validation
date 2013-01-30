@@ -1,14 +1,14 @@
 /**
  *
  * Struts2 Validation -- lib.js, version 1.1
- * Author: liuronghan
+ * Author: liuronghan@baidu.com
  * Built at 2012/12/16 08:44 GMT
  *
  * (c) baidu.com 2012
  * All rights reserved.
  * https://github.com/mycoin/validation
  */
-var rigel = rigel || {};;
+var rigel = rigel || {};
 ;(function(window, document, undefined) {
     // use the trict mode 
     "use strict";

@@ -1,10 +1,10 @@
 /**
  *
  * Struts2 Validation -- lib.js, version 1.1
- * Author: liuronghan@baidu.com
- * Built at 2012/12/16 08:44 GMT
+ * Author: nqliujiangtao@gmail.com
+ * Built at 2012/12/30 12:55 GMT
  *
- * (c) baidu.com 2012
+ * (c) www.baidu.com 2012
  * All rights reserved.
  * https://github.com/mycoin/validation
  */

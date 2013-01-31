@@ -124,13 +124,13 @@ var rigel = rigel || {};
                     value = parseFloat(value);
                 }
                 //the maximum inclusive value
-                var maxI = parseFloat(rule["maxInclusiveValue"]);
+                var maxI = parseFloat(rule["maxInclusive"]);
                 //the minimum inclusive value
-                var minI = parseFloat(rule["minInclusiveValue"]);
+                var minI = parseFloat(rule["minInclusive"]);
                 //the maximum exclusive value
-                var maxE = parseFloat(rule["maxExclusiveValue"]);
+                var maxE = parseFloat(rule["maxExclusive"]);
                 //the minimum exclusive value
-                var minE = parseFloat(rule["minExclusiveValue"]);
+                var minE = parseFloat(rule["minExclusive"]);
                 
                 // nani ? so ga..
                 if ((!isNaN(maxI) && value - maxI > 0)

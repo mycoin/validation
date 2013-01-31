@@ -304,7 +304,7 @@ var rigel = rigel || {};
      * @param Function function the callback function, pass {rule, value, data}
      */
     exports.reg = function(){
-
+        
     }
     // add version field.
     exports.version = "stable-1.0";
@@ -349,5 +349,5 @@ if(!checking.result) {
     balalala....
 }
 
-java -jar /home/work/code-snippets/runable/WebContent/tools/yuicompressor.jar --type js --charset UTF-8 lib.js -o lib.min.js
+java -jar /home/local/bin/yuicompressor.jar --type js --charset UTF-8 lib.js -o lib.min.js
 */

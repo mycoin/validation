@@ -59,21 +59,22 @@ test("validation int with max, min rules", function () {
 test("validation double with minInclusive, maxInclusive rules", function () {
     var rules = {
         doubleLength: {
-            "double": {"minInclusive": 10.000,"maxInclusive ": 10.002}
+            "double": {"minInclusive": 10.000, "maxInclusive": 10.002}
         },
         doublePrice: {
-            "double": {"minInclusive": 10.001,"maxInclusive": 10.001}
+            "double": {"minInclusive": 10.001, "maxInclusive": 10.001}
         },
         doubleExclude: {
-            "double": {"minExclusiveValue": 10.001,"maxExclusiveValue": 10.001, message: "ExclusiveError"}
+            "double": {"minExclusive": 10.001,"maxExclusive": 10.001, message: "ExclusiveError"}
         }
-    }
+    };
     var data = {
-        doubleLength : "10.001",
-        doublePrice: "10.001",
-        doubleExclude: "10.001"
-    }
+        doubleLength : 10.001,
+        doublePrice: 10.001,
+        doubleExclude: 10.001
+    };
     var result = rigel.validation.check(data, rules);
+
     ok(result.result == false, "minInclusive and maxInclusive take place, OK!");
     ok(result.message == "ExclusiveError", "minExclusiveValue and maxExclusiveValue take place, OK!");
 });
@@ -113,13 +114,13 @@ test("validation email.", function(){
 test("validation of stringlength, case", function(){
     var rules = {
         accName: {
-            stringlength : {maxLength: 10, minLength: 5,message: "accNameError" }
+            stringLength : {maxLength: 10, minLength: 5,message: "accNameError" }
         },
         sendMsg: {
-            stringlength : {maxLength: 10, minLength: 5, message: "sendMsg", trim: true}
+            stringLength : {maxLength: 10, minLength: 5, message: "sendMsg", trim: true}
         },
         sendLength: {
-            stringlength : {maxLength: 10, minLength: 5, message : "sendLength"}
+            stringLength : {maxLength: 10, minLength: 5, message : "sendLength"}
         }
     };
 

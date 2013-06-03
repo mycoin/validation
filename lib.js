@@ -106,6 +106,15 @@ var rigel = rigel || {};
                 return true;
             },
             /**
+             * checks if the long specified is within a certain range.
+             * rule {min, max, message}
+             * @see LongRangeFieldValidator.java
+             */
+            "long": function () {
+                //yui int keywords
+                return this["int"].apply(this, [].slice.call(arguments));
+            },
+            /**
              * checks if the double specified is within a certain range.
              * rule {minInclusive, maxInclusive, minExclusive, maxExclusive}
              * @see DoubleRangeFieldValidator.java

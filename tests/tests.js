@@ -114,13 +114,13 @@ test("validation email.", function(){
 test("validation of stringlength, case", function(){
     var rules = {
         accName: {
-            stringLength : {maxLength: 10, minLength: 5,message: "accNameError" }
+            stringlength : {maxLength: 10, minLength: 5,message: "accNameError" }
         },
         sendMsg: {
-            stringLength : {maxLength: 10, minLength: 5, message: "sendMsg", trim: true}
+            stringlength : {maxLength: 10, minLength: 5, message: "sendMsg", trim: true}
         },
         sendLength: {
-            stringLength : {maxLength: 10, minLength: 5, message : "sendLength"}
+            stringlength : {maxLength: 10, minLength: 5, message : "sendLength"}
         }
     };
 

@@ -248,7 +248,7 @@ var rigel = rigel || {};
              * rule {minLength, maxLength, trim}
              * @see StringLengthFieldValidator.java
              */
-            "stringLength": function (rule, value) {
+            "stringlength": function (rule, value) {
                 // if there is no value - don't do comparison
                 // if a value is required, a required validator should be added
                 value = modify(value, null);

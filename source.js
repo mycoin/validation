@@ -23,7 +23,7 @@
  *
  * author:  mycoin (nqliujiangtao@gmail.com)
  * date:    2013/09/28
- * resp:    https://github.com/mycoin/validation
+ * repos:   https://github.com/mycoin/validation
  */
 ;(function(ns, defination) {
     if (typeof module != 'undefined') {

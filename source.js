@@ -36,17 +36,16 @@
     // exports object
     var exports = {
         version: 'stable-1.0.1'
-    };
+    },
     /**
      * notice String(undefined) == '', so assert null into ''
      * @param Object {null, uindefined, String}, yes, toString method instead
      * @return return a string that has been trimed.
      */
-    var trim = function (string) {
+    trim = function (string) {
         string == null && (string = undefined);
         return String(string).replace(new RegExp('(^[\\s\\t\\xa0\\u3000]+)|([\\u3000\\xa0\\s\\t]+$)', 'g'), '');
-    };
-
+    },
     /**
      * restore null, empty string, and undefined to a param item.
      * @example restore(message, '');
@@ -55,19 +54,41 @@
      * @param Object type
      * @return Object value (optional)
      */
-    var restore = function (value, type) {
+    restore = function (value, type) {
         if (value === '' || value === undefined || value === null) {
             value = type;
         }
         return value;
-    }
+    },
+    /**
+     * parse a string to Date
+     * @example parseDate('2014-01-06');
+     *
+     * @param date [string] string value
+     * @return Date
+     */
+    parseDate = function(date) {
+        var temp = date;
+        if (temp = Date.parse(date)) {
+            //if type of date is Date, also exit here
+            return new Date(temp);
+        }
+        temp = date;
+        if (/^[0-9\-\/\ :]*$/.test(temp)) {
+            temp = temp.replace(/\-/g, '/');
+            if (temp = new Date(temp)) {
+                return temp;
+            }
+        }
+        return NaN;
+    },
     /**
      * the main validations rules, contains [required, 
         requiredstring, int, double, date, email, regex, url, stringLength..]
      * any bugs contant nqliujiangtao@gmail.com
      * @return true || message string.
      */
-    var validators = {
+    validators = {
         /**
          * RequiredFieldValidator checks if the specified field is not null.
          * @see RequiredFieldValidator.java
@@ -170,21 +191,6 @@
             if (value == null) {
                 return true;
             }
-            var parseDate = function(date) {
-                var temp = date;
-                if (temp = Date.parse(date)) {
-                    //if type of date is Date, also exit here
-                    return new Date(temp);
-                }
-                temp = date;
-                if (/^[0-9\-\/\ :]*$/.test(temp)) {
-                    temp = temp.replace(/\-/g, '/');
-                    if (temp = new Date(temp)) {
-                        return temp;
-                    }
-                }
-                return NaN;
-            }
             var value = parseDate(value);
 
             if (!value || 'Invalid Date' == value) {
@@ -276,7 +282,7 @@
             }
             return true;
         }
-    };
+    },
     /**
      * the portal entry, check if the data matches the rules. exports the error statcks.
      * @public
@@ -300,7 +306,7 @@
      * @param rulesMap {Object} validate mapping, serialized by `opensymphony/xwork2/validator`
      * @return {Object} the validate result, key [`result`, `message`, `stacks`].
      */
-    exports.validate = function(dataMap, rulesMap) {
+    validate = exports.validate = function(dataMap, rulesMap) {
         var stacks = [];
         for (var key in rulesMap || {}) {
             for (var name in rulesMap[key] || {}) {

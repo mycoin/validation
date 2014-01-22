@@ -25,27 +25,24 @@
  * date:    2013/09/28
  * repos:   https://github.com/mycoin/validation
  */
-;(function(ns, defination) {
-    if (typeof module != 'undefined') {
-        module.exports = defination();
-    } else if (typeof define == 'function' && typeof define.amd == 'object') {
-        define(defination);
-    } else {
-        this[ns] = defination();
-    }
-})('validator', function() {
-    // use the trict mode 
+;(function (global, factory) {
+    //AMD and CMD.
+    typeof define === 'function' && define(factory);
+    //Node.js and Browser global
+    (typeof exports !== 'undefined' ? exports : global).validator = factory();
+}(this, function () {
     'use strict';
 
+    // exports object
     var exports = {
-        version: 'stable-1.0'
+        version: 'stable-1.0.1'
     };
     /**
      * notice String(undefined) == '', so assert null into ''
      * @param Object {null, uindefined, String}, yes, toString method instead
      * @return return a string that has been trimed.
      */
-    function trim(string) {
+    var trim = function (string) {
         string == null && (string = undefined);
         return String(string).replace(new RegExp('(^[\\s\\t\\xa0\\u3000]+)|([\\u3000\\xa0\\s\\t]+$)', 'g'), '');
     };
@@ -58,7 +55,7 @@
      * @param Object type
      * @return Object value (optional)
      */
-    function restore(value, type) {
+    var restore = function (value, type) {
         if (value === '' || value === undefined || value === null) {
             value = type;
         }
@@ -331,13 +328,5 @@
             'message': 'OK'
         };
     };
-
-    exports.register = function (type, rules) {
-        if(! validators.hasOwnProperty('type') && typeof rules == 'function') {
-            validators[type] = rules;
-            return true;
-        }
-        return false;
-    };
     return exports;
-});
+}));

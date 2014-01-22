@@ -341,4 +341,3 @@
     };
     return exports;
 });
-//java -jar /home/local/bin/yuicompressor.jar --type js --charset UTF-8 lib.js -o lib.min.js

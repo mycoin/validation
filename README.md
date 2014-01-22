@@ -36,7 +36,7 @@ var data = $("#reg_form").serialize();
 
 then fire the main function:
 <pre>
-var checking = rigel.validation.check(data, rules);
+var checking = validator.validate(data, rules);
 if(false == checking.result) {
     alert(checking.message);
     return false;
@@ -48,7 +48,8 @@ the result will be like this:
 <pre>
 result = {
     result: true,
-    stacks:[]
+    stacks:[],
+    message: "OK"
 };
 
 result = {

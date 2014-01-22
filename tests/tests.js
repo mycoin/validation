@@ -1,3 +1,4 @@
+var exports = validator;
 test("require validation case", function () {
     var rules = {
         custName: {
@@ -7,14 +8,14 @@ test("require validation case", function () {
     var data = {
         custName : ""
     }
-    var result = rigel.validation.check(data, rules);
+    var result = exports.validate(data, rules);
     ok(result.result == false, "result true right!")
     ok(result.field == "custName", "field custName right!")
     ok(result.message == "custNameNull", "result message right!");
     var data = {
         custName : "Hi"
     }
-    var result = rigel.validation.check(data, rules);
+    var result = exports.validate(data, rules);
     ok(result.result == true, "result false right!")
 
 });
@@ -32,7 +33,7 @@ test("requiredstring validation case", function () {
         custName : " ",
         custPage: " "
     }
-    var result = rigel.validation.check(data, rules);
+    var result = exports.validate(data, rules);
     ok(result.field == "custName", "custName has trimed, but failed.");
     ok(result.stacks.length == 1, "Only custPage passed, because of needness of trim");
 
@@ -51,7 +52,7 @@ test("validation int with max, min rules", function () {
         ageMin : "1",
         ageNone: "20"
     }
-    var result = rigel.validation.check(data, rules);
+    var result = exports.validate(data, rules);
     ok(result.result == false, "ageMin is not in 18 < 100, OK!");
     ok(result.field == "ageMin", "ageMin not pass, OK!");
 });
@@ -73,7 +74,7 @@ test("validation double with minInclusive, maxInclusive rules", function () {
         doublePrice: 10.001,
         doubleExclude: 10.001
     };
-    var result = rigel.validation.check(data, rules);
+    var result = exports.validate(data, rules);
 
     ok(result.result == false, "minInclusive and maxInclusive take place, OK!");
     ok(result.message == "ExclusiveError", "minExclusiveValue and maxExclusiveValue take place, OK!");
@@ -92,7 +93,7 @@ test("validation date with min, max rules", function () {
         fromDate: "2012-6-6",
         endDate : "2013-8-8"
     }
-    var result = rigel.validation.check(data, rules);
+    var result = exports.validate(data, rules);
     ok(result.result == false, "date validation take place, OK!");
     ok(result.message == "EndError", "error value take place, OK!");
 });
@@ -106,7 +107,7 @@ test("validation email.", function(){
         rightEmail : "liuronghan@baidu.com",
         wrongEmail : "#mail%"
     }
-    var result = rigel.validation.check(data, rules);
+    var result = exports.validate(data, rules);
     ok(result.result == false, "email field, OK!");
     ok(result.message == "WrongError", "message, ok!")
 });
@@ -129,7 +130,7 @@ test("validation of stringlength, case", function(){
         sendMsg: "ok",
         sendLength: "1234567890@@@"
     };
-    var result = rigel.validation.check(data, rules);
+    var result = exports.validate(data, rules);
     ok(result.result == false, "result ,OK!");
     ok(result.stacks.length == 2, "error length  == 2, OK!");
     ok(result.message == "sendMsg", "error message, OK");
@@ -141,7 +142,7 @@ test("validation of stringlength, case", function(){
         sendMsg: "     123456          ",
         sendLength: "        2"
     };
-    result = rigel.validation.check(data, rules);
+    result = exports.validate(data, rules);
     ok(data.sendMsg.length == 21 && result.message !== "sendMsg" , "thought, length > 10, but trimed better , OK!")
     ok(data.sendLength.length == 9 && result.message !== "sendLength" , "");
 });

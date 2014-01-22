@@ -23,7 +23,7 @@ var rules = {
         "regex": {
             "caseSensitive": false,
             "trim": true,
-            "expression": "^1[3|5|8]{1}{0-9}{9}$",
+            "expression": "^1[3|5|8]{1}[0-9]{9}$",
             "message": "error in Cellphone."
         }
     }

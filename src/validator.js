@@ -46,8 +46,7 @@
      * @return return a string that has been trimed.
      */
     trim = function (string) {
-        string == null && (string = undefined);
-        return String(string).replace(new RegExp('(^[\\s\\t\\xa0\\u3000]+)|([\\u3000\\xa0\\s\\t]+$)', 'g'), '');
+        return string.replace(/(^\s*)|(\s*$)/g, "");
     },
 
     /**
@@ -180,7 +179,11 @@
             var minE = parseFloat(rule['minExclusive']);
 
             // nani ? so ga..
-            if ((!isNaN(maxI) && value - maxI > 0) || (!isNaN(minI) && value - minI < 0) || (!isNaN(maxE) && value - maxE >= 0) || (!isNaN(minE) && value - minE <= 0)) {
+            if ((!isNaN(maxI) && value - maxI > 0) 
+                    || (!isNaN(minI) && value - minI < 0) 
+                    || (!isNaN(maxE) && value - maxE >= 0) 
+                    || (!isNaN(minE) && value - minE <= 0)
+                ) {
                 return rule['message'];
             }
             return true;
@@ -283,7 +286,9 @@
 
             if ((rule['minLength'] > -1) && (value.length < rule['minLength'])) {
                 return rule['message'];
-            } else if ((rule['minLength'] > -1) && (value.length > rule['minLength'])) {
+            } else if ((rule['minLength'] > -1) 
+                    && (value.length > rule['minLength'])
+                ) {
                 return rule['message'];
             }
             return true;
@@ -291,7 +296,7 @@
     },
 
     /**
-     * the portal entry, check if the data matches the rules. exports the error statcks.
+     * the portal entry, check if the data matches the rules.
      * @public
         var rules = {
             'custPhone': {
@@ -310,7 +315,8 @@
         returns {result: true, stacks: [], message: 'OK'}
      *
      * @param dataMap {Object} the form data, JSON format.
-     * @param rulesMap {Object} validate mapping, serialized by `opensymphony/xwork2/validator`
+     * @param rulesMap {Object} validate mapping, serialized 
+     *      by `opensymphony/xwork2/validator`
      * @return {Object} the validate result, key [`result`, `message`, `stacks`].
      */
     validate = exports.validate = function(dataMap, rulesMap) {

@@ -146,3 +146,17 @@ test("validation of stringlength, case", function(){
     ok(data.sendMsg.length == 21 && result.message !== "sendMsg" , "thought, length > 10, but trimed better , OK!")
     ok(data.sendLength.length == 9 && result.message !== "sendLength" , "");
 });
+
+test("validation url.", function(){
+    var rules = {
+        rightUrl: {url: {message : "RightError"}},
+        wrongUrl: {url: {message : "WrongError"}}
+    };
+    var data = {
+        rightUrl : "http://www.baidu.com/index.html#wd=struts2",
+        wrongUrl : "!@@"
+    }
+    var result = exports.validate(data, rules);
+    ok(result.result == false, "email field, OK!");
+    ok(result.message == "WrongError", "message, ok!")
+});

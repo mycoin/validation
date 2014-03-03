@@ -46,7 +46,7 @@
      * @return return a string that has been trimed.
      */
     trim = function (string) {
-        return string.replace(/(^\s*)|(\s*$)/g, "");
+        return string.replace(/^[\s\xa0\u3000]+|[\u3000\xa0\s]+$/g, '');
     },
 
     /**
@@ -149,7 +149,7 @@
          */
         'long': function() {
             //for yuicompressor `int` is a keyword
-            return this['int'].apply(this, [].slice.call(arguments));
+            return validators['int']([].slice.call(arguments));
         },
         /**
          * checks if the double specified is within a certain range.
@@ -226,9 +226,13 @@
         'email': function(rule, value) {
             //struts2 is so stupid.
             rule['expression'] = '^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+(\.[A-Za-z0-9-]+)*((\.[A-Za-z0-9]{2,})|(\.[A-Za-z0-9]{2,}\.[A-Za-z0-9]{2,}))$';
+            
+            // no case sensitive
             rule['caseSensitive'] = false;
+
             return validators.regex(rule, value);
         },
+
         /**
          * Validates a string field using a regular expression.
          * rule {expression, caseSensitive, trim}
@@ -261,8 +265,32 @@
          * @todo what is 'URLUtil.verifyUrl'?? so ga.
          */
         'url': function(rule, value) {
-            return true;
+            rule['expression'] = "^((https|http|ftp|rtsp|mms)?://)"
+            // FTPusername,password
+            + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?"
+            // IP
+            + "(([0-9]{1,3}\.){3}[0-9]{1,3}"
+            // allowd domains
+            + "|"
+            // www.
+            + "([0-9a-z_!~*'()-]+\.)*"
+            // secondhost
+            + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\."
+            // first level domain
+            + "[a-z]{2,6})"
+            // port
+            + "(:[0-9]{1,4})?"
+            // aslashisn'trequiredifthereisnofilename
+            + "((/?)|"
+            // file,hash.
+            + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+
+            // no case sensitive
+            rule['caseSensitive'] = false;
+
+            return validators.regex(rule, value);
         },
+
         /**
          * checks that a String field is of a certain length.
             The 'trim' parameter determines whether it will trim

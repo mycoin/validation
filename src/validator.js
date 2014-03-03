@@ -28,10 +28,10 @@
 ;(function (global, factory) {
     //AMD and CMD.
     typeof define === 'function' && define(factory);
-    
+
     //Node.js and Browser global
     (typeof exports !== 'undefined' ? exports : global).validator = factory();
-    
+
 }(this, function () {
     'use strict';
 
@@ -39,17 +39,17 @@
     var exports = {
         version: 'stable-1.0.1'
     },
-    
+
     /**
      * notice String(undefined) == '', so assert null into ''
-     * @param Object {null, undefined, String}, yes, toString method instead
-     * @return return a string that has been trim.
+     * @param Object {null, uindefined, String}, yes, toString method instead
+     * @return return a string that has been trimed.
      */
     trim = function (string) {
         string == null && (string = undefined);
         return String(string).replace(new RegExp('(^[\\s\\t\\xa0\\u3000]+)|([\\u3000\\xa0\\s\\t]+$)', 'g'), '');
     },
-    
+
     /**
      * restore null, empty string, and undefined to a param item.
      * @example restore(message, '');
@@ -64,7 +64,7 @@
         }
         return value;
     },
-    
+
     /**
      * parse a string to Date
      * @example parseDate('2014-01-06');
@@ -87,7 +87,7 @@
         }
         return NaN;
     },
-    
+
     /**
      * the main validations rules, contains [required, 
         requiredstring, int, double, date, email, regex, url, stringLength..]
@@ -103,7 +103,6 @@
             value = restore(value, null);
             return value == null ? rule['message'] : true;
         },
-        
         /**
          * checks that a String field is non-null and has a length > 0
          * rule {trim}
@@ -114,7 +113,6 @@
             rule['trim'] == true && (value = trim(value));
             return value.length == 0 ? rule['message'] : true;
         },
-        
         /**
          * checks if the integer specified is within a certain range.
          * rule {min, max}
@@ -145,7 +143,6 @@
             }
             return true;
         },
-        
         /**
          * checks if the long specified is within a certain range.
          * rule {min, max, message}
@@ -155,7 +152,6 @@
             //for yuicompressor `int` is a keyword
             return this['int'].apply(this, [].slice.call(arguments));
         },
-        
         /**
          * checks if the double specified is within a certain range.
          * rule {minInclusive, maxInclusive, minExclusive, maxExclusive}
@@ -189,7 +185,6 @@
             }
             return true;
         },
-        
         /**
          * checks if the date supplied is within a specific range.
          * rule {min, max}
@@ -220,7 +215,6 @@
             }
             return true;
         },
-        
         /**
          * checks that a given String field is a valid email address.
          * rule {}
@@ -232,7 +226,6 @@
             rule['caseSensitive'] = false;
             return validators.regex(rule, value);
         },
-        
         /**
          * Validates a string field using a regular expression.
          * rule {expression, caseSensitive, trim}
@@ -258,7 +251,6 @@
 
             return true;
         },
-        
         /**
          * checks that a given field is a String and a valid URL.
          * rule {}
@@ -268,7 +260,6 @@
         'url': function(rule, value) {
             return true;
         },
-        
         /**
          * checks that a String field is of a certain length.
             The 'trim' parameter determines whether it will trim
@@ -298,7 +289,7 @@
             return true;
         }
     },
-    
+
     /**
      * the portal entry, check if the data matches the rules. exports the error statcks.
      * @public
@@ -351,6 +342,5 @@
         };
     };
     
-    // return the exports
     return exports;
 }));

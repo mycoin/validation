@@ -1,4 +1,4 @@
-validator.js
+struts-validator
 ==============
 
 an other form validation based on the struts2 framework ..

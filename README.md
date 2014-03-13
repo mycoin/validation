@@ -3,6 +3,11 @@ validator.js
 
 an other form validation based on the struts2 framework ..
 
+install like:
+
+<pre>npm install struts-validator -g</pre>
+
+
 you can define the form validate config like this:
 <pre>
 var rules = {

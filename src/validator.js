@@ -25,13 +25,21 @@
  * date:    2013/09/28
  * repos:   https://github.com/mycoin/validation
  */
-;(function (global, factory) {
-    //AMD and CMD.
-    typeof define === 'function' && define(factory);
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define([], factory);
+        
+    } else if (typeof exports === 'object') {
 
-    //Node.js and Browser global
-    (typeof exports !== 'undefined' ? exports : global).validator = factory();
-
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory();
+    } else {
+        // Browser globals (root is window)
+        root.validator = factory();
+    }
 }(this, function () {
     'use strict';
 

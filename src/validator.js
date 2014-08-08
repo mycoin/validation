@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Baidu Inc. All rights reserved.
+/* Copyright 2013 Baidu Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the 'Software'), to deal
@@ -26,7 +26,9 @@
  */
 ;(function (global, factory) {
     // for AMD and CMD.
-    typeof define === 'function' && define(factory);
+    if (typeof define === 'function') {
+        define(factory); // jshint ignore: line
+    }
 
     // Node.js and Browser `global`
     (typeof exports !== 'undefined' ? exports : global).validator = factory();
@@ -69,7 +71,7 @@
             }
         }
         return source;
-    };
+    }
 
     /**
      * restore null, empty string, and undefined to a default value.
@@ -84,7 +86,7 @@
             value = optValue;
         }
         return value;
-    };
+    }
 
     /**
      * parse a string representation of a date, and returns the date type
@@ -94,19 +96,19 @@
      */
     function parseDate(source) {
         var ret = source;
-        if (ret = Date.parse(source)) {
+        if (ret = Date.parse(source)) { // jshint ignore: line
             // A string representing an RFC2822 or ISO 8601 date.
             return new Date(ret);
         }
         ret = source;
         if (/^[0-9\-\/\ :]*$/.test(ret)) {
             ret = ret.replace(/\-/g, '/');
-            if (ret = new Date(ret)) {
+            if (ret = new Date(ret)) { // jshint ignore: line
                 return ret;
             }
         }
         return false;
-    };
+    }
 
     /**
      * Simple common assertion API
@@ -154,7 +156,9 @@
          */
         'requiredstring': function (rule, value) {
             value = restore(value, '');
-            rule.trim === true && (value = trim(value));
+            if (rule.trim === true) {
+                value = trim(value);
+            }
             return value.length === 0 ? rule.message : OK;
         },
 
@@ -203,7 +207,7 @@
          */
         'long': function (rule, value) {
             // for yuicompressor `int` is a keyword
-            return validators['int'].call(this, rule, value);
+            return validators['int'].call(this, rule, value); // jshint ignore: line
         },
 
         /**
@@ -243,6 +247,7 @@
 
 
             // nani ? so ga..
+            // jshint ignore: start
             if ((!isNaN(maxInclusive) && value - maxInclusive > 0) 
                     || (!isNaN(minInclusive) && value - minInclusive < 0) 
                     || (!isNaN(maxExclusive) && value - maxExclusive >= 0) 
@@ -250,6 +255,7 @@
                 ) {
                 return rule.message;
             }
+            // jshint ignore: end
             return OK;
         },
 
@@ -303,6 +309,7 @@
             rule.caseSensitive = false;
 
             // expression to validate that the string is an email address
+            // jshint ignore: start
             rule.expression = ''
                 + '\\b'
                 + '^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+'
@@ -310,6 +317,7 @@
                 + '\.[A-Za-z0-9]{2,}))$';
 
             // notice that `EmailValidator` extends `RegexFieldValidator`.
+            // jshint ignore: end
             return validators.regex.call(this, rule, value);
         },
 
@@ -328,11 +336,17 @@
             }
 
             // logic from xwork2. Java is so stupid
-            undefined === rule.caseSensitive && (rule.caseSensitive = true);
-            undefined === rule.trim && (rule.trim = true);
+            if (undefined === rule.caseSensitive) {
+                rule.caseSensitive = true;
+            }
+            if (undefined === rule.trim) {
+                rule.trim = true;
+            }
 
             // er, trim value flag.
-            rule.trim === true && (value = trim(value));
+            if (rule.trim === true) {
+                value = trim(value);
+            }
             var opt = rule.caseSensitive ? 'i' : undefined;
 
             try {
@@ -343,7 +357,7 @@
             }
             catch (ex) {
                 // bad regular expression? do nothing.
-            };
+            }
 
             return OK;
         },
@@ -376,9 +390,15 @@
                 return OK;
             }
 
-            undefined === rule.minLength && (rule.minLength = -1);
-            undefined === rule.maxLength && (rule.maxLength = -1);
-            undefined === rule.trim && (rule.trim = true);
+            if (undefined === rule.minLength) {
+                rule.minLength = -1;
+            }
+            if (undefined === rule.maxLength) {
+                rule.maxLength = -1;
+            }
+            if (undefined === rule.trim) {
+                rule.trim = true;
+            }
 
             // use a required validator for these
             if (rule.trim === true) {

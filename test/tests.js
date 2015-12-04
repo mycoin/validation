@@ -153,10 +153,10 @@ test("validation url.", function(){
         wrongUrl: {url: {message : "WrongError"}}
     };
     var data = {
-        rightUrl : "http://www.baidu.com/index.html#wd=struts2",
+        rightUrl : "http://www.baidu.com:90",
         wrongUrl : "!@@"
     }
     var result = exports.validate(data, rules);
-    ok(result.result == false, "email field, OK!");
+    ok(result.result == false, "url field, OK!");
     ok(result.message == "WrongError", "message, ok!")
 });

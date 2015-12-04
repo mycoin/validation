@@ -370,7 +370,17 @@
          * @todo convert 'URLUtil.verifyUrl' logic to javascript.
          */
         'url': function (rule, value) {
-            return OK;
+            // set `CaseSensitive` false.
+            rule.caseSensitive = false;
+
+            // expression to validate that the string is an email address
+            // jshint ignore: start
+            rule.expression = '' + 
+                '\\b' + 
+                '^[A-Za-z]+://[a-z0-9-_]+\\.[a-z:0-9-_%&\?\/.=]+$';
+
+            // jshint ignore: end
+            return validators.regex.call(this, rule, value);
         },
         /**
          * checks that a String field is of a certain length, a 'trim' parameter

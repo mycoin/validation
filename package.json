@@ -1,7 +1,7 @@
 {
     "name": "struts-validator",
     "description": "an other validation based on the struts2 framework",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "homepage": "https://github.com/mycoin/validation",
     "keywords": [
         "validator",
@@ -10,9 +10,9 @@
     ],
     "author": {
         "name": "mycoin",
-        "email": "nqliujiangtao@gmail.com"
+        "email": "mycoin@icloud.com"
     },
-    "main": "src/validator.js",
+    "main": "validator.js",
     "bugs": {
         "url": "https://github.com/mycoin/validation/issues"
     },

@@ -1,5 +1,5 @@
 /*
-/* Copyright 2013 Baidu Inc. All rights reserved.
+/* Copyright 2012 Baidu Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the 'Software'), to deal
@@ -27,28 +27,26 @@
 ;(function (global, factory) {
     // for AMD and CMD.
     if (typeof define === 'function') {
-        define(factory); // jshint ignore: line
+        define(factory) // jshint ignore: line
     }
-
     // Node.js and Browser `global`
-    (typeof exports !== 'undefined' ? exports : global).validator = factory();
-
-}(this, function () {
+    ;(typeof exports !== 'undefined' ? exports : global).validator = factory()
+})(this, function () {
     // using strict mode
-    'use strict'; 
+    'use strict'
 
     // exports object
     var exports = {
-        version: 'stable-1.0.1'
-    };
-    
+        version: 'stable-1.0.1',
+    }
+
     /**
      * mark the right validation result.
-     *  
+     *
      * @const
      * @type {number}
      */
-    var OK = true;
+    var OK = true
 
     /**
      * strip whitespace from the beginning and end of a string
@@ -61,16 +59,16 @@
      */
     function trim(source) {
         // don't use String(obj) because it could be overriden.
-        source = ('' + source).replace(/^\s+/, '');
+        source = ('' + source).replace(/^\s+/, '')
 
         // the source may be changed, never cache the length.
         for (var i = source.length - 1; i >= 0; i--) {
             if (/\S/.test(source.charAt(i))) {
-                source = source.substring(0, i + 1);
-                break;
+                source = source.substring(0, i + 1)
+                break
             }
         }
-        return source;
+        return source
     }
 
     /**
@@ -83,9 +81,9 @@
      */
     function restore(value, optValue) {
         if (value === '' || value === undefined || value === null) {
-            value = optValue;
+            value = optValue
         }
-        return value;
+        return value
     }
 
     /**
@@ -95,19 +93,21 @@
      * @return Date
      */
     function parseDate(source) {
-        var ret = source;
-        if (ret = Date.parse(source)) { // jshint ignore: line
+        var ret = source
+        if ((ret = Date.parse(source))) {
+            // jshint ignore: line
             // A string representing an RFC2822 or ISO 8601 date.
-            return new Date(ret);
+            return new Date(ret)
         }
-        ret = source;
+        ret = source
         if (/^[0-9\-\/\ :]*$/.test(ret)) {
-            ret = ret.replace(/\-/g, '/');
-            if (ret = new Date(ret)) { // jshint ignore: line
-                return ret;
+            ret = ret.replace(/\-/g, '/')
+            if ((ret = new Date(ret))) {
+                // jshint ignore: line
+                return ret
             }
         }
-        return false;
+        return false
     }
 
     /**
@@ -121,18 +121,18 @@
      */
     function assert(condition, optMessage) {
         if (!condition) {
-            var msg = 'Assertion failed';
+            var msg = 'Assertion failed'
             if (optMessage) {
-                msg = msg + ': ' + optMessage;
+                msg = msg + ': ' + optMessage
             }
-            throw new Error(msg);
+            throw new Error(msg)
         }
     }
 
     /**
-     * the main validations rules, contains [required, requiredstring, int, 
+     * the main validations rules, contains [required, requiredstring, int,
      * double, date, email, regex, url, stringLength..]
-     * any bugs contact nqliujiangtao@gmail.com
+     * any bugs contact mycoin@icloud.com
      */
     var validators = {
         /**
@@ -140,11 +140,11 @@
          * see the logic RequiredFieldValidator.java
          *
          * @param {Object} rule for `RequiredFieldValidator`
-         * @param {*} value the value 
+         * @param {*} value the value
          */
-        'required': function (rule, value) {
-            value = restore(value, null);
-            return value === null ? rule.message : OK;
+        required: function (rule, value) {
+            value = restore(value, null)
+            return value === null ? rule.message : OK
         },
 
         /**
@@ -152,14 +152,14 @@
          * see the logic RequiredStringValidator.java
          *
          * @param {Object} rule for `RequiredStringValidator`
-         * @param {*} value the value 
+         * @param {*} value the value
          */
-        'requiredstring': function (rule, value) {
-            value = restore(value, '');
+        requiredstring: function (rule, value) {
+            value = restore(value, '')
             if (rule.trim === true) {
-                value = trim(value);
+                value = trim(value)
             }
-            return value.length === 0 ? rule.message : OK;
+            return value.length === 0 ? rule.message : OK
         },
 
         /**
@@ -167,35 +167,34 @@
          * see the logic IntRangeFieldValidator.java
          *
          * @param {Object} rule for `IntRangeFieldValidator`
-         * @param {*} value the value 
+         * @param {*} value the value
          */
-        'int': function (rule, value) {
+        int: function (rule, value) {
             // if there is no value - don't do comparison
-            value = restore(value, null);
+            value = restore(value, null)
             if (value === null) {
                 // if a value is required, a required validator should be added
-                return true;
+                return true
             }
             if (!/^\-?[0-9]+$/.test(value)) {
                 // not a number
-                return rule.message;
-            } 
-            else {
-                value = parseInt(value);
+                return rule.message
+            } else {
+                value = parseInt(value)
             }
-            var min = parseInt(rule.min);
-            var max = parseInt(rule.max);
+            var min = parseInt(rule.min)
+            var max = parseInt(rule.max)
 
             // only check for a minimum value if the min parameter is set
             if (!isNaN(min) && value - min < 0) {
-                return rule.message;
+                return rule.message
             }
 
             // only check for a minimum value if the max parameter is set
             if (!isNaN(max) && value - max > 0) {
-                return rule.message;
+                return rule.message
             }
-            return OK;
+            return OK
         },
 
         /**
@@ -203,11 +202,11 @@
          * see the logic LongRangeFieldValidator.java
          *
          * @param {Object} rule for `LongRangeFieldValidator`
-         * @param {*} value the value 
+         * @param {*} value the value
          */
-        'long': function (rule, value) {
+        long: function (rule, value) {
             // for yuicompressor `int` is a keyword
-            return validators['int'].call(this, rule, value); // jshint ignore: line
+            return validators['int'].call(this, rule, value) // jshint ignore: line
         },
 
         /**
@@ -217,46 +216,45 @@
          * @param {Object} rule for `DoubleRangeFieldValidator`
          * @param {*} value the value
          */
-        'double': function (rule, value) {
+        double: function (rule, value) {
             // if there is no value - don't do comparison
             // if a value is required, a required validator should be added
-            value = restore(value, null);
+            value = restore(value, null)
 
             if (value === null) {
-                return OK;
+                return OK
             }
             if (!/^\-?[0-9]*\.?[0-9]+$/.test(value)) {
                 // not a double, nani? double??
-                return rule.message;
-            }
-            else {
-                value = parseFloat(value);
+                return rule.message
+            } else {
+                value = parseFloat(value)
             }
 
             // the maximum inclusive value
-            var maxInclusive = parseFloat(rule.maxInclusive);
+            var maxInclusive = parseFloat(rule.maxInclusive)
 
             // the minimum inclusive value
-            var minInclusive = parseFloat(rule.minInclusive);
+            var minInclusive = parseFloat(rule.minInclusive)
 
             // the maximum exclusive value
-            var maxExclusive = parseFloat(rule.maxExclusive);
+            var maxExclusive = parseFloat(rule.maxExclusive)
 
             // the minimum exclusive value
-            var minExclusive = parseFloat(rule.minExclusive);
-
+            var minExclusive = parseFloat(rule.minExclusive)
 
             // nani ? so ga..
             // jshint ignore: start
-            if ((!isNaN(maxInclusive) && value - maxInclusive > 0) 
-                    || (!isNaN(minInclusive) && value - minInclusive < 0) 
-                    || (!isNaN(maxExclusive) && value - maxExclusive >= 0) 
-                    || (!isNaN(minExclusive) && value - minExclusive <= 0)
-                ) {
-                return rule.message;
+            if (
+                (!isNaN(maxInclusive) && value - maxInclusive > 0) ||
+                (!isNaN(minInclusive) && value - minInclusive < 0) ||
+                (!isNaN(maxExclusive) && value - maxExclusive >= 0) ||
+                (!isNaN(minExclusive) && value - minExclusive <= 0)
+            ) {
+                return rule.message
             }
             // jshint ignore: end
-            return OK;
+            return OK
         },
 
         /**
@@ -266,35 +264,35 @@
          * @param {Object} rule rule for `DateRangeFieldValidator`
          * @param {*} value the value
          */
-        'date': function (rule, value) {
+        date: function (rule, value) {
             // if there is no value - don't do comparison
-            value = restore(value, null);
+            value = restore(value, null)
 
             // if a value is required, a required validator should be added
             if (value === null) {
-                return OK;
+                return OK
             }
-            value = parseDate(value);
+            value = parseDate(value)
 
             // invalid date, return the error message.
             if (!value || 'Invalid Date' === value) {
-                return rule.message;
+                return rule.message
             }
 
-            var min = parseDate(rule.min);
-            var max = parseDate(rule.max);
+            var min = parseDate(rule.min)
+            var max = parseDate(rule.max)
 
             // only check for a minimum value if the min date is set
             if (!isNaN(min) && value.getTime() - min.getTime() < 0) {
-                return rule.message;
+                return rule.message
             }
 
             // only check for a minimum value if the max date is set
             if (!isNaN(max) && value.getTime() - max.getTime() > 0) {
-                return rule.message;
+                return rule.message
             }
 
-            return OK;
+            return OK
         },
         /**
          * checks that a given String field is a valid email address.
@@ -304,21 +302,22 @@
          * @param {*} value the value
          */
 
-        'email': function (rule, value) {
+        email: function (rule, value) {
             // set `CaseSensitive` false.
-            rule.caseSensitive = false;
+            rule.caseSensitive = false
 
             // expression to validate that the string is an email address
             // jshint ignore: start
-            rule.expression = ''
-                + '\\b'
-                + '^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+'
-                + '(\.[A-Za-z0-9-]+)*((\.[A-Za-z0-9]{2,})|(\.[A-Za-z0-9]{2,}'
-                + '\.[A-Za-z0-9]{2,}))$';
+            rule.expression =
+                '' +
+                '\\b' +
+                '^[_A-Za-z0-9-]+(.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+' +
+                '(.[A-Za-z0-9-]+)*((.[A-Za-z0-9]{2,})|(.[A-Za-z0-9]{2,}' +
+                '.[A-Za-z0-9]{2,}))$'
 
             // notice that `EmailValidator` extends `RegexFieldValidator`.
             // jshint ignore: end
-            return validators.regex.call(this, rule, value);
+            return validators.regex.call(this, rule, value)
         },
 
         /**
@@ -328,38 +327,37 @@
          * @param {Object} rule rule for `ExpressionValidator`
          * @param {*} value the value
          */
-        'regex': function (rule, value) {
-            value = restore(value, null);
+        regex: function (rule, value) {
+            value = restore(value, null)
             // string must not be empty
             if (value === null || trim(value).length === 0) {
-                return OK;
+                return OK
             }
 
             // logic from xwork2. Java is so stupid
             if (undefined === rule.caseSensitive) {
-                rule.caseSensitive = true;
+                rule.caseSensitive = true
             }
             if (undefined === rule.trim) {
-                rule.trim = true;
+                rule.trim = true
             }
 
             // er, trim value flag.
             if (rule.trim === true) {
-                value = trim(value);
+                value = trim(value)
             }
-            var opt = rule.caseSensitive ? 'i' : undefined;
+            var opt = rule.caseSensitive ? 'i' : undefined
 
             try {
                 // create a regular expression from given string.
                 if (!new RegExp(rule.expression, opt).test(value)) {
-                    return rule.message;
+                    return rule.message
                 }
-            }
-            catch (ex) {
+            } catch (ex) {
                 // bad regular expression? do nothing.
             }
 
-            return OK;
+            return OK
         },
         /**
          * checks that a given field is a String and a valid URL.
@@ -369,18 +367,16 @@
          * @param {*} value the value
          * @todo convert 'URLUtil.verifyUrl' logic to javascript.
          */
-        'url': function (rule, value) {
+        url: function (rule, value) {
             // set `CaseSensitive` false.
-            rule.caseSensitive = false;
+            rule.caseSensitive = false
 
             // expression to validate that the string is an email address
             // jshint ignore: start
-            rule.expression = '' + 
-                '\\b' + 
-                '^[A-Za-z]+://[a-z0-9-_]+\\.[a-z:0-9-_%&\?\/.=]+$';
+            rule.expression = '' + '\\b' + '^[A-Za-z]+://[a-z0-9-_]+\\.[a-z:0-9-_%&?/.=]+$'
 
             // jshint ignore: end
-            return validators.regex.call(this, rule, value);
+            return validators.regex.call(this, rule, value)
         },
         /**
          * checks that a String field is of a certain length, a 'trim' parameter
@@ -390,41 +386,40 @@
          * @param {Object} rule for `StringLengthFieldValidator.java`
          * @param {*} value the value
          */
-        'stringlength': function (rule, value) {
+        stringlength: function (rule, value) {
             // if there is no value - don't do comparison
             // if a value is required, a required validator should be added
-            value = restore(value, null);
+            value = restore(value, null)
 
             // as less as length of 0 ? so ga
             if (value === null || value.length <= 0) {
-                return OK;
+                return OK
             }
 
             if (undefined === rule.minLength) {
-                rule.minLength = -1;
+                rule.minLength = -1
             }
             if (undefined === rule.maxLength) {
-                rule.maxLength = -1;
+                rule.maxLength = -1
             }
             if (undefined === rule.trim) {
-                rule.trim = true;
+                rule.trim = true
             }
 
             // use a required validator for these
             if (rule.trim === true) {
-                value = trim(value);
+                value = trim(value)
             }
 
-            if ((rule.minLength > -1) && (value.length < rule.minLength)) {
-                return rule.message;
-            } 
-            else if ((rule.minLength > -1) && (value.length > rule.minLength)) {
-                return rule.message;
+            if (rule.minLength > -1 && value.length < rule.minLength) {
+                return rule.message
+            } else if (rule.minLength > -1 && value.length > rule.minLength) {
+                return rule.message
             }
 
-            return OK;
-        }
-    };
+            return OK
+        },
+    }
     /**
      * the portal entry, check if the data matches the rules..
      * @public
@@ -435,59 +430,57 @@
      * @return {Object} the validate result, key [`result`, `message`, `stacks`].
      */
     exports.validate = function (collection, rules) {
-        var stacks = [];
+        var stacks = []
 
         for (var key in rules || {}) {
             for (var name in rules[key] || {}) {
-                var rule = rules[key][name] || {};
-                var func = validators[name];
+                var rule = rules[key][name] || {}
+                var func = validators[name]
                 if (typeof func === 'function') {
                     // get the error message
-                    var message = func(rule, collection[key], collection);
+                    var message = func(rule, collection[key], collection)
 
                     if (message !== OK) {
                         stacks.push({
                             field: key,
                             message: message,
-                            value: collection[key]
-                        });
+                            value: collection[key],
+                        })
                     }
-                }
-                else {
-                    assert(false, 'Validator `' + name + '` not found.');
+                } else {
+                    assert(false, 'Validator `' + name + '` not found.')
                 }
             }
         }
 
         // notice the stacks`s length marks the validation result.
-        return stacks.length ? {
-            'result': false,
-            'field': stacks[0].field, // the nearest field
-            'message': stacks[0].message,
-            'stacks': stacks
-        } : {
-            'result': true,
-            'message': 'OK'
-        };
-    };
+        return stacks.length
+            ? {
+                  result: false,
+                  field: stacks[0].field, // the nearest field
+                  message: stacks[0].message,
+                  stacks: stacks,
+              }
+            : {
+                  result: true,
+                  message: 'OK',
+              }
+    }
 
     /**
      * validate a form synchronously.
      * @public
      */
     exports.validateSync = function () {
-        // setTimeout(fn, 0) often assumed to be done synchronously. 
-        var me = this;
-        var argv = [].slice.call(arguments, 0);
+        // setTimeout(fn, 0) often assumed to be done synchronously.
+        var me = this
+        var argv = [].slice.call(arguments, 0)
 
         // see {@link http://ejohn.org/blog/how-javascript-timers-work/}
-        setTimeout(
-            function() {
-                exports.validate.apply(me, argv); 
-            }, 
-            0
-        );
-    };
+        setTimeout(function () {
+            exports.validate.apply(me, argv)
+        }, 0)
+    }
 
-    return exports;
-}));
+    return exports
+})

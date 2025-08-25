@@ -1,14 +1,13 @@
-struts-validator
-==============
+# struts-validator
 
 an other form validation based on the struts2 framework ..
 
 install like:
 
-<pre>npm install struts-validator -g</pre>
-
+<pre>npm install struts-validator</pre>
 
 you can define the form validate config like this:
+
 <pre>
 var rules = {
     "regAccount": {
@@ -34,12 +33,14 @@ var rules = {
     }
 }
 </pre>
+
 familiar with't ? the same structure as validation.xml.
 
 now, use your library to get form data:
-var data = $("#reg_form").serialize(); 
+var data = $("#reg_form").serialize();
 
 then fire the main function:
+
 <pre>
 var checking = validator.validate(data, rules);
 if(false == checking.result) {
@@ -50,6 +51,7 @@ if(false == checking.result) {
 </pre>
 
 the result will be like this:
+
 <pre>
 result = {
     result: true,

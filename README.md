@@ -1,6 +1,6 @@
 # struts-validator
 
-an other form validation based on the struts2 framework ..
+an other form validation based on the struts2 framework .. [README.pdf](README.pdf)
 
 install like:
 

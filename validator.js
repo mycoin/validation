@@ -21,8 +21,8 @@
  *
  * file:    another form validator based on the struts2 framework.
  * author:  Liu,Ronghan(liuronghan@baidu.com)
- * date:    2013/09/28
- * repos:   https://github.com/mycoin/validation
+ * date:    2012/09/28
+ * repos:   https://github.com/mycoin/struts-validator
  */
 ;(function (global, factory) {
     // for AMD and CMD.

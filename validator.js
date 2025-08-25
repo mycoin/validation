@@ -26,18 +26,20 @@
  */
 ;(function (global, factory) {
     // for AMD and CMD.
-    if (typeof define === 'function') {
-        define(factory) // jshint ignore: line
+    if (typeof define === 'function' && define.amd) {
+        define(factory)
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory()
+    } else {
+        // Node.js and Browser `global`
+        global.validator = factory()
     }
-    // Node.js and Browser `global`
-    ;(typeof exports !== 'undefined' ? exports : global).validator = factory()
 })(this, function () {
     // using strict mode
     'use strict'
-
     // exports object
     var exports = {
-        version: 'stable-1.0.1',
+        version: '1.0.1',
     }
 
     /**
@@ -466,21 +468,5 @@
                   message: 'OK',
               }
     }
-
-    /**
-     * validate a form synchronously.
-     * @public
-     */
-    exports.validateSync = function () {
-        // setTimeout(fn, 0) often assumed to be done synchronously.
-        var me = this
-        var argv = [].slice.call(arguments, 0)
-
-        // see {@link http://ejohn.org/blog/how-javascript-timers-work/}
-        setTimeout(function () {
-            exports.validate.apply(me, argv)
-        }, 0)
-    }
-
     return exports
 })
